@@ -9,6 +9,9 @@ object DataManager {
         initializeNotes()
     }
 
+    /**
+     * Adds a note to notes ArrayList<NoteInfo>
+     */
     fun addNote(course: CourseInfo, noteTitle: String, noteText: String): Int {
         val note = NoteInfo(course, noteTitle, noteText)
         notes.add(note)
@@ -24,7 +27,7 @@ object DataManager {
         return null
     }
 
-    private fun initializeNotes() {
+    fun initializeNotes() {
         notes.add(
             NoteInfo(
                 CourseInfo("android_intents", "Android Programming with Intents"),
