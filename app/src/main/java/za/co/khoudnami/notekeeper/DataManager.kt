@@ -42,6 +42,7 @@ object DataManager {
                 "Text 1"
             )
         )
+
         notes.add(
             NoteInfo(
                 CourseInfo("android_intents", "Android Programming with Intents"),
