@@ -1,6 +1,5 @@
 package za.co.khoudnami.notekeeper
 
-import android.provider.ContactsContract
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -45,7 +44,8 @@ class DataManagerTest {
     }
 
     /**
-     * checks for equality of using the equals() method when used on objects
+     * checks for equality of using the equals() method objects when used on objects
+     *
      */
     @Test
     fun assertEqualsTests() {
@@ -99,16 +99,16 @@ class DataManagerTest {
         val noteText = "This is the body of my first test note"
 
         //add note to notes ArrayList<NoteInfo> and store its position
-        val index = DataManager.addNote(course, noteTitle, noteText)
+        val indexOfNewlyAddedNote = DataManager.addNote(course, noteTitle, noteText)
 
         //get the note you just added to notes ArrayList<NoteInfo> using the index obtained above
-        val note = DataManager.notes[index]
+        val newlyAddedNote = DataManager.notes[indexOfNewlyAddedNote]
 
         // when used on objects, assertEquals(expected, actual) compares them
         // using the equals() method
-        assertEquals(course, note.course)
-        assertEquals(noteTitle, note.title)
-        assertEquals(noteText, note.text)
+        assertEquals(course, newlyAddedNote.course)
+        assertEquals(noteTitle, newlyAddedNote.title)
+        assertEquals(noteText, newlyAddedNote.text)
     }
 
     @Test
