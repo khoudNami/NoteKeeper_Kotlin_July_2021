@@ -11,7 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class MainActivity : AppCompatActivity() {
+class NoteActivity : AppCompatActivity() {
 
     private val tag = this::class.simpleName
     private var notePosition = POSITION_NOT_SET
@@ -21,15 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val adapterCourses = ArrayAdapter<CourseInfo>(
-            this,
-            android.R.layout.simple_spinner_item,
-            DataManager.courses.values.toList()
-        )
-        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-        spinnerCourses.adapter = adapterCourses
-
+        // get the notePosition as a result of a config change OR click on listItem in NoteListActivity
         notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET)
             ?: intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET)
 
@@ -39,35 +31,22 @@ class MainActivity : AppCompatActivity() {
             createNewNote()
         }
 
+        val adapterCourses = ArrayAdapter<CourseInfo>(
+            this,
+            android.R.layout.simple_spinner_item,
+            DataManager.courses.values.toList()
+        )
+
+        adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        spinnerCourses.adapter = adapterCourses
+
         Log.d(tag, "onCreate")
 
     }
 
-    private fun createNewNote() {
-        DataManager.notes.add(NoteInfo())
-        notePosition = DataManager.notes.lastIndex
-    }
-
-    override fun onPause() {
-        super.onPause()
-        saveNote()
-        Log.d(tag, "onPause")
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt(NOTE_POSITION, notePosition)
-    }
-
-    private fun saveNote() {
-        val note = DataManager.notes[notePosition]
-        note.title = textNoteTitle.text.toString()
-        note.text = textNoteText.text.toString()
-        note.course = spinnerCourses.selectedItem as CourseInfo
-    }
-
     private fun displayNote() {
-        if (notePosition > DataManager.notes.lastIndex) {
+        if (notePosition > DataManager.notes.lastIndex) { //to investigate scenario where displayNote can be called with this position
             showMessage("Note not found")
             Log.e(
                 tag,
@@ -90,16 +69,33 @@ class MainActivity : AppCompatActivity() {
         Snackbar.make(textNoteTitle, s, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun moveNext() {
-        ++notePosition
-        displayNote()
-        invalidateOptionsMenu()
+    // creating a new note using the Edit in place logic
+    private fun createNewNote() {
+        DataManager.notes.add(NoteInfo())
+        notePosition = DataManager.notes.lastIndex
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    // when the back button is pressed...
+    override fun onPause() {
+        super.onPause()
+        saveNote()
+        Log.d(tag, "onPause")
     }
+
+    // a configuration change occurred while on NoteActivity
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(NOTE_POSITION, notePosition)
+    }
+
+    // save what ever is on the screen to the note in the current note position
+    private fun saveNote() {
+        val note = DataManager.notes[notePosition]
+        note.title = textNoteTitle.text.toString()
+        note.text = textNoteText.text.toString()
+        note.course = spinnerCourses.selectedItem as CourseInfo
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -112,8 +108,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+    private fun moveNext() {
+        ++notePosition
+        displayNote()
+        invalidateOptionsMenu() //forcing a call to onCreateOptionsMenu(). Which in turn forces a call to onPrepareOptionsMenu
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         if (notePosition >= DataManager.notes.lastIndex) {
             val menuItem = menu?.findItem(R.id.action_next)
             if (menuItem != null) {
@@ -123,6 +129,7 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onPrepareOptionsMenu(menu)
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         return super.onSupportNavigateUp()

@@ -3,7 +3,9 @@ package za.co.khoudnami.notekeeper
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_note_list.*
 import kotlinx.android.synthetic.main.content_note_list.*
 
@@ -17,18 +19,13 @@ class NoteListActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            val activityIntent = Intent(this, MainActivity::class.java)
+            val activityIntent = Intent(this, NoteActivity::class.java)
             startActivity(activityIntent)
         }
 
-        listNotes.adapter =
-            ArrayAdapter(this, android.R.layout.simple_list_item_1, DataManager.notes)
+        listItems.layoutManager = LinearLayoutManager(this)
 
-        listNotes.setOnItemClickListener { parent, view, position, id ->
-            val activityIntent = Intent(this, MainActivity::class.java)
-            activityIntent.putExtra(NOTE_POSITION, position)
-            startActivity(activityIntent)
-        }
+        listItems.adapter = NoteRecyclerAdapter(this,DataManager.notes)
     }
 
     override fun onRestart() {
@@ -37,11 +34,7 @@ class NoteListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-//        listNotes.adapter =
-//            ArrayAdapter(this, android.R.layout.simple_list_item_1, DataManager.notes)
 
-        //casting ListAdapter to ArrayAdapter
-        (listNotes.adapter as ArrayAdapter<NoteInfo>).notifyDataSetChanged()
     }
 
     override fun onSupportNavigateUp(): Boolean {

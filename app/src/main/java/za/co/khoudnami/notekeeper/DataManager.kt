@@ -9,24 +9,6 @@ object DataManager {
         initializeNotes()
     }
 
-    /**
-     * Adds a note to notes ArrayList<NoteInfo>
-     */
-    fun addNote(course: CourseInfo, noteTitle: String, noteText: String): Int {
-        val note = NoteInfo(course, noteTitle, noteText)
-        notes.add(note)
-        return notes.lastIndex
-    }
-
-    fun findNote(course: CourseInfo, noteTitle: String, noteText: String): NoteInfo? {
-        for (note in notes) {
-            if (course == note.course && noteTitle == note.title && noteText == note.text) {
-                return note
-            }
-        }
-        return null
-    }
-
     fun initializeNotes() {
         notes.add(
             NoteInfo(
@@ -42,7 +24,6 @@ object DataManager {
                 "Text 1"
             )
         )
-
         notes.add(
             NoteInfo(
                 CourseInfo("android_intents", "Android Programming with Intents"),
@@ -122,5 +103,24 @@ object DataManager {
 
         course = CourseInfo("java_core", "Java Fundamentals: The Core Platform")
         courses.set(course.courseId, course)
+    }
+
+    /**
+     * addNote() and findNote() were used in the Testing course
+     * Adds a note to notes ArrayList<NoteInfo>
+     */
+    fun addNote(course: CourseInfo, noteTitle: String, noteText: String): Int {
+        val note = NoteInfo(course, noteTitle, noteText)
+        notes.add(note)
+        return notes.lastIndex
+    }
+
+    fun findNote(course: CourseInfo, noteTitle: String, noteText: String): NoteInfo? {
+        for (note in notes) {
+            if (course == note.course && noteTitle == note.title && noteText == note.text) {
+                return note
+            }
+        }
+        return null
     }
 }
