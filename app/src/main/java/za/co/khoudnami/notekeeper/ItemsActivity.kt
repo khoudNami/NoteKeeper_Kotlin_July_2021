@@ -12,6 +12,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_items.*
 import kotlinx.android.synthetic.main.app_bar_items.*
@@ -22,7 +23,6 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
 
     private val noteLayoutManager by lazy { LinearLayoutManager(this) }
-
     private val noteRecyclerAdapter by lazy { NoteRecyclerAdapter(this, DataManager.notes) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,7 +88,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                 displayNotes()
             }
             R.id.nav_courses -> {
-                handleSelection("Courses")
+                displayCourses()
             }
             R.id.nav_share -> {
                 handleSelection("Don't you think you've share enough")
@@ -100,6 +100,12 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun displayCourses() {
+        listItems.layoutManager = GridLayoutManager(this, 2)
+        listItems.adapter = CourseRecyclerAdapter(this, DataManager.courses.values.toList())
+        nav_view.menu.findItem(R.id.nav_courses).isChecked = true
     }
 
     private fun handleSelection(message: String) {
