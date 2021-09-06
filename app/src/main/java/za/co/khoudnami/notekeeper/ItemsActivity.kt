@@ -51,11 +51,10 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         nav_view.setNavigationItemSelectedListener(this)
     }
 
-    private fun displayNotes() {
-        listItems.layoutManager = noteLayoutManager
-        listItems.adapter = noteRecyclerAdapter
-
-        nav_view.menu.findItem(R.id.nav_notes).isChecked = true
+    override fun onResume() {
+        super.onResume()
+        listItems.adapter?.notifyDataSetChanged()
+        // It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort.
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -74,12 +73,6 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         } else {
             super.onBackPressed()
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        listItems.adapter?.notifyDataSetChanged()
-        // It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort.
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -102,7 +95,14 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         return true
     }
 
-    private fun displayCourses() {
+    private fun displayNotes() {
+        listItems.layoutManager = noteLayoutManager
+        listItems.adapter = noteRecyclerAdapter
+
+        nav_view.menu.findItem(R.id.nav_notes).isChecked = true
+    }
+
+    private fun displayCourses() {// could have made it lazy properties
         listItems.layoutManager = GridLayoutManager(this, 2)
         listItems.adapter = CourseRecyclerAdapter(this, DataManager.courses.values.toList())
         nav_view.menu.findItem(R.id.nav_courses).isChecked = true
