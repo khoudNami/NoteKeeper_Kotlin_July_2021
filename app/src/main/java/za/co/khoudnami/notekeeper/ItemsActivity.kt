@@ -12,6 +12,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_items.*
 import kotlinx.android.synthetic.main.app_bar_items.*
@@ -20,6 +21,9 @@ import kotlinx.android.synthetic.main.content_note_list.*
 
 class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+
+    private val noteLayoutManager by lazy { LinearLayoutManager(this) }
+    private val noteRecyclerAdapter by lazy { NoteRecyclerAdapter(this, DataManager.notes) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +46,15 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        listItems.layoutManager = LinearLayoutManager(this)
-        listItems.adapter = NoteRecyclerAdapter(this, DataManager.notes)
+        displayNotes()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
 
+    override fun onResume() {
+        super.onResume()
+        listItems.adapter?.notifyDataSetChanged()
+        // It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort.
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -55,9 +63,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         return true
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
-
         return super.onSupportNavigateUp()
     }
 
@@ -69,15 +75,41 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        listItems.adapter?.notifyDataSetChanged()
-        // It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort.
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        TODO("Not yet implemented")
+        when (item.itemId) {
+            R.id.nav_notes -> {
+                displayNotes()
+            }
+            R.id.nav_courses -> {
+                displayCourses()
+            }
+            R.id.nav_share -> {
+                handleSelection("Don't you think you've share enough")
+            }
+            R.id.nav_send -> {
+                handleSelection("Send")
+            }
+        }
+
+        drawer_layout.closeDrawer(GravityCompat.START)
+        return true
     }
 
+    private fun displayNotes() {
+        listItems.layoutManager = noteLayoutManager
+        listItems.adapter = noteRecyclerAdapter
+
+        nav_view.menu.findItem(R.id.nav_notes).isChecked = true
+    }
+
+    private fun displayCourses() {// could have made it lazy properties
+        listItems.layoutManager = GridLayoutManager(this, 2)
+        listItems.adapter = CourseRecyclerAdapter(this, DataManager.courses.values.toList())
+        nav_view.menu.findItem(R.id.nav_courses).isChecked = true
+    }
+
+    private fun handleSelection(message: String) {
+        Snackbar.make(listItems, message, Snackbar.LENGTH_LONG).show()
+    }
 
 }
