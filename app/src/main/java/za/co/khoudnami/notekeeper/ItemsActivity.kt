@@ -21,6 +21,10 @@ import kotlinx.android.synthetic.main.content_note_list.*
 class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
+    private val noteLayoutManager by lazy { LinearLayoutManager(this) }
+
+    private val noteRecyclerAdapter by lazy { NoteRecyclerAdapter(this, DataManager.notes) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,12 +46,11 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        listItems.layoutManager = LinearLayoutManager(this)
-        listItems.adapter = NoteRecyclerAdapter(this, DataManager.notes)
+        listItems.layoutManager = noteLayoutManager
+        listItems.adapter = noteRecyclerAdapter
 
         nav_view.setNavigationItemSelectedListener(this)
-
-    }
+     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -55,9 +58,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         return true
     }
 
-
     override fun onSupportNavigateUp(): Boolean {
-
         return super.onSupportNavigateUp()
     }
 
@@ -76,8 +77,27 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        TODO("Not yet implemented")
+        when (item.itemId) {
+            R.id.nav_notes -> {
+                handleSelection("Notes")
+            }
+            R.id.nav_courses -> {
+                handleSelection("Courses")
+            }
+            R.id.nav_share -> {
+                handleSelection("Don't you think you've share enough")
+            }
+            R.id.nav_send -> {
+                handleSelection("Send")
+            }
+        }
+
+        drawer_layout.closeDrawer(GravityCompat.START)
+        return true
     }
 
+    private fun handleSelection(message: String) {
+        Snackbar.make(listItems, message, Snackbar.LENGTH_LONG).show()
+    }
 
 }
