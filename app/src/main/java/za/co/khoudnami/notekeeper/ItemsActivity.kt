@@ -46,11 +46,17 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
+        displayNotes()
+
+        nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    private fun displayNotes() {
         listItems.layoutManager = noteLayoutManager
         listItems.adapter = noteRecyclerAdapter
 
-        nav_view.setNavigationItemSelectedListener(this)
-     }
+        nav_view.menu.findItem(R.id.nav_notes).isChecked = true
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -79,7 +85,7 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_notes -> {
-                handleSelection("Notes")
+                displayNotes()
             }
             R.id.nav_courses -> {
                 handleSelection("Courses")
