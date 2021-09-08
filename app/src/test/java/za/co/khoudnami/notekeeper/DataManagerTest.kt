@@ -1,5 +1,6 @@
 package za.co.khoudnami.notekeeper
 
+import org.junit.After
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -7,7 +8,11 @@ import org.junit.Before
 
 class DataManagerTest {
 
+    /**
+     * Assuring test consistency by clearing the list and initializing it before each test.
+     */
     @Before
+    @After
     fun setUp() {
         DataManager.notes.clear()
         DataManager.initializeNotes()
@@ -18,11 +23,12 @@ class DataManagerTest {
      */
     @Test
     fun assertSameTests() {
-        var firstCourseInfo = CourseInfo(
+        val firstCourseInfo = CourseInfo(
             "android_async",
             "Android Async Programming and Services"
         )
-        var secondCourseInfo = CourseInfo(
+
+        val secondCourseInfo = CourseInfo(
             "android_async",
             "Android Async Programming and Services"
         )
@@ -45,7 +51,6 @@ class DataManagerTest {
 
     /**
      * checks for equality of using the equals() method objects when used on objects
-     *
      */
     @Test
     fun assertEqualsTests() {
@@ -88,27 +93,27 @@ class DataManagerTest {
         var secondCourseInfo = null
 
         assertNotNull(firstCourseInfo) // pass because object reference is not null
-        assertNull(secondCourseInfo) // pass because object reference null
+        assertNull(secondCourseInfo) // pass because object reference is null
     }
 
     @Test
     fun addNote() {
-        //get the input to use in the addNote() method
+        //construct the input to use in the addNote() method
         val course = DataManager.courses.get("android_async")!!
         val noteTitle = "This is a test note"
         val noteText = "This is the body of my first test note"
 
-        //add note to notes ArrayList<NoteInfo> and store its position
+        //add note to the DataManager's notes ArrayList<NoteInfo> and store its position
         val indexOfNewlyAddedNote = DataManager.addNote(course, noteTitle, noteText)
 
-        //get the note you just added to notes ArrayList<NoteInfo> using the index obtained above
+        //get the note you just added to the DataManager's notes ArrayList<NoteInfo>, using the index obtained above
         val newlyAddedNote = DataManager.notes[indexOfNewlyAddedNote]
 
         // when used on objects, assertEquals(expected, actual) compares them
         // using the equals() method
         assertEquals(course, newlyAddedNote.course)
-        assertEquals(noteTitle, newlyAddedNote.title)
-        assertEquals(noteText, newlyAddedNote.text)
+        assertEquals(noteTitle, newlyAddedNote.title) // equality operator used here?
+        assertEquals(noteText, newlyAddedNote.text) // equality operator used here?
     }
 
     @Test
