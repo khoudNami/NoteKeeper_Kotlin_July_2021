@@ -41,24 +41,49 @@ class NavigationTest {
 
     @Test
     fun selectNoteAfterNavigationDrawerChange() {
-        onView(withId(R.id.drawer_layout))
-            .perform(
-                DrawerActions.open()
-            )
+        onView(
+            withId(R.id.drawer_layout)
+        ).perform(
+            DrawerActions.open()
+        )
 
-        onView(withId(R.id.nav_view))
-            .perform(
-                NavigationViewActions.navigateTo(R.id.nav_courses)
-            )
+        onView(
+            withId(R.id.nav_view)
+        ).perform(
+            NavigationViewActions.navigateTo(R.id.nav_courses)
+        )
 
         var coursePosition = 1
-        onView(withId(R.id.listItems))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition<CourseRecyclerAdapter.CustomViewHolder>(
-                    coursePosition,
-                    click()
-                )
+        onView(
+            withId(R.id.listItems)
+        ).perform(
+            RecyclerViewActions.actionOnItemAtPosition<CourseRecyclerAdapter.CustomViewHolder>(
+                coursePosition,
+                click()
             )
+        )
+
+        onView(
+            withId(R.id.drawer_layout)
+        ).perform(
+            DrawerActions.open()
+        )
+
+        onView(
+            withId(R.id.nav_view)
+        ).perform(
+            NavigationViewActions.navigateTo(R.id.nav_notes)
+        )
+
+        val notePosition = 0
+        onView(
+            withId(R.id.listItems)
+        ).perform(
+            RecyclerViewActions.actionOnItemAtPosition<NoteRecyclerAdapter.ViewHolder>(
+                notePosition,
+                click()
+            )
+        )
     }
 
 }
