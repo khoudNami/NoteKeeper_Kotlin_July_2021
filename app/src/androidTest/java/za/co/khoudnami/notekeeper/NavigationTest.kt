@@ -32,7 +32,6 @@ import androidx.test.espresso.contrib.NavigationViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions
 
 
-
 @RunWith(AndroidJUnit4::class)
 class NavigationTest {
 
@@ -41,8 +40,16 @@ class NavigationTest {
     val itemsActivity = ActivityScenarioRule(ItemsActivity::class.java)
 
     @Test
-    fun selectNoteAfterNavigationDrawerChange(){
+    fun selectNoteAfterNavigationDrawerChange() {
+        onView(withId(R.id.drawer_layout))
+            .perform(
+                DrawerActions.close()
+            )
 
+        onView(withId(R.id.nav_view))
+            .perform(
+                NavigationViewActions.navigateTo(R.id.nav_courses)
+            )
     }
 
 }
