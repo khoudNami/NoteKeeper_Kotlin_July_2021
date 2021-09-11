@@ -107,4 +107,10 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    /**
+     * what is the difference here? is there any significant impact of using either?
+     */
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
+    implementation 'androidx.test.espresso:espresso-contrib:3.4.0'
 }
