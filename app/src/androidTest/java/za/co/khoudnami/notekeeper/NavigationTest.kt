@@ -53,7 +53,7 @@ class NavigationTest {
             NavigationViewActions.navigateTo(R.id.nav_courses)
         )
 
-        var coursePosition = 1
+        var coursePosition = 0
         onView(
             withId(R.id.listItems)
         ).perform(
@@ -84,6 +84,16 @@ class NavigationTest {
                 click()
             )
         )
+
+        val note = DataManager.notes[0]
+        onView(withId(R.id.spinnerCourses))
+            .check(
+                matches(
+                    withSpinnerText(note.course?.title)
+                )
+            )
+
+
     }
 
 }
