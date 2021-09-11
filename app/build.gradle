@@ -109,8 +109,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     /**
-     * what is the difference here? is there any significant impact of using either?
+     * what is the difference here? is there any significant impact of using either? using
+     * implementation seems to be resulting into an error that prevents ActivityScenarioRule
+     * from starting the ItemsActivity.
      */
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
-    implementation 'androidx.test.espresso:espresso-contrib:3.4.0'
+    //implementation 'androidx.test.espresso:espresso-contrib:3.4.0'
 }

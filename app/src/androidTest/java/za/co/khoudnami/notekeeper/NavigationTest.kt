@@ -43,7 +43,7 @@ class NavigationTest {
     fun selectNoteAfterNavigationDrawerChange() {
         onView(withId(R.id.drawer_layout))
             .perform(
-                DrawerActions.close()
+                DrawerActions.open()
             )
 
         onView(withId(R.id.nav_view))
