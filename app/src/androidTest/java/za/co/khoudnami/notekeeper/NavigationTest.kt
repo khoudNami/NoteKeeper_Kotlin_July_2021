@@ -50,6 +50,15 @@ class NavigationTest {
             .perform(
                 NavigationViewActions.navigateTo(R.id.nav_courses)
             )
+
+        var coursePosition = 1
+        onView(withId(R.id.listItems))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition<CourseRecyclerAdapter.CustomViewHolder>(
+                    coursePosition,
+                    click()
+                )
+            )
     }
 
 }
