@@ -75,7 +75,7 @@ class NavigationTest {
             NavigationViewActions.navigateTo(R.id.nav_notes)
         )
 
-        val notePosition = 0
+        val notePosition = 10
         onView(
             withId(R.id.listItems)
         ).perform(
@@ -85,11 +85,25 @@ class NavigationTest {
             )
         )
 
-        val note = DataManager.notes[0]
-        onView(withId(R.id.spinnerCourses))
+        val note = DataManager.notes[notePosition]
+//        onView(withId(R.id.spinnerCourses))
+//            .check(
+//                matches(
+//                    withSpinnerText(note.course?.title)
+//                )
+//            )
+
+        onView(withId(R.id.textNoteTitle))
             .check(
                 matches(
-                    withSpinnerText(note.course?.title)
+                    withText(note.title)
+                )
+            )
+
+        onView(withId(R.id.textNoteText))
+            .check(
+                matches(
+                    withText(note.text)
                 )
             )
 

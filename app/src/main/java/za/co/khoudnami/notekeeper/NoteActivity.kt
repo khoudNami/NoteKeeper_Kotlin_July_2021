@@ -62,6 +62,7 @@ class NoteActivity : AppCompatActivity() {
         textNoteText.setText(note.text)
 
         val coursePosition = DataManager.courses.values.indexOf(note.course)
+        spinnerCourses.setSelection()
         spinnerCourses.setSelection(coursePosition)
     }
 
