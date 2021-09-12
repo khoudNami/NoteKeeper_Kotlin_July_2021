@@ -21,16 +21,6 @@ class NoteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        // get the notePosition as a result of a config change OR click on listItem in NoteListActivity
-        notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET)
-            ?: intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET)
-
-        if (notePosition != POSITION_NOT_SET)
-            displayNote()
-        else {
-            createNewNote()
-        }
-
         val adapterCourses = ArrayAdapter<CourseInfo>(
             this,
             android.R.layout.simple_spinner_item,
@@ -40,6 +30,16 @@ class NoteActivity : AppCompatActivity() {
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
         spinnerCourses.adapter = adapterCourses
+
+        // get the notePosition as a result of a config change OR click on listItem in NoteListActivity
+        notePosition = savedInstanceState?.getInt(NOTE_POSITION, POSITION_NOT_SET)
+            ?: intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET)
+
+        if (notePosition != POSITION_NOT_SET)
+            displayNote()
+        else {
+            createNewNote()
+        }
 
         Log.d(tag, "onCreate")
 
