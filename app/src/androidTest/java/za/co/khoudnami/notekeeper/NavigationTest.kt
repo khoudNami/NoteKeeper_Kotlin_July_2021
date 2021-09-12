@@ -86,24 +86,44 @@ class NavigationTest {
         )
 
         val note = DataManager.notes[notePosition]
-//        onView(withId(R.id.spinnerCourses))
-//            .check(
-//                matches(
-//                    withSpinnerText(note.course?.title)
-//                )
-//            )
+
+        onView(withId(R.id.spinnerCourses))
+            .check(
+                matches(
+                    withSpinnerText(note.course?.title)
+                )
+            )
+
+        onView(withId(R.id.spinnerCourses))
+            .check(
+                matches(
+                    withSpinnerText(containsString(note.course?.title))
+                )
+            )
 
         onView(withId(R.id.textNoteTitle))
             .check(
                 matches(
-                    withText(note.title)
+                    withText(note.title)//v1
+                )
+            )
+        onView(withId(R.id.textNoteTitle))
+            .check(
+                matches(
+                    withText(containsString(note.title))//v2
                 )
             )
 
         onView(withId(R.id.textNoteText))
             .check(
                 matches(
-                    withText(note.text)
+                    withText(note.text)//v1
+                )
+            )
+        onView(withId(R.id.textNoteText))
+            .check(
+                matches(
+                    withText(containsString(note.text))//v2
                 )
             )
 
