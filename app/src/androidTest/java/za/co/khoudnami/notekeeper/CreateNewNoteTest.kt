@@ -50,6 +50,5 @@ class CreateNewNoteTest {
         assertEquals(course, newlyCreatedNote.course)
         assertEquals(noteTitle, newlyCreatedNote.title)
         assertEquals(noteText, newlyCreatedNote.text)
-
     }
 }
