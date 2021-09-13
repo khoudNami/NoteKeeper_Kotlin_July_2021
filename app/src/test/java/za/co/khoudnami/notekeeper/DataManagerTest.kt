@@ -1,5 +1,6 @@
 package za.co.khoudnami.notekeeper
 
+import org.junit.After
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -7,110 +8,32 @@ import org.junit.Before
 
 class DataManagerTest {
 
-    @Before
-    fun setUp() {
-        DataManager.notes.clear()
-        DataManager.initializeNotes()
-    }
-
     /**
-     * checks for equality of references when used on objects
+     * Example 1 Unit Test
      */
-    @Test
-    fun assertSameTests() {
-        var firstCourseInfo = CourseInfo(
-            "android_async",
-            "Android Async Programming and Services"
-        )
-        var secondCourseInfo = CourseInfo(
-            "android_async",
-            "Android Async Programming and Services"
-        )
-
-        val listOfCourses = ArrayList<CourseInfo>()
-
-        listOfCourses.add(firstCourseInfo)
-        listOfCourses.add(secondCourseInfo)
-
-        val item = listOfCourses[0]
-        val sameItem = listOfCourses[0]
-
-        assertSame(item, sameItem) // pass because object references are the same
-
-        assertNotSame(
-            firstCourseInfo,
-            secondCourseInfo
-        ) // pass because the object references are not same
-    }
-
-    /**
-     * checks for equality of using the equals() method objects when used on objects
-     *
-     */
-    @Test
-    fun assertEqualsTests() {
-        var firstCourseInfo = CourseInfo(
-            "android_async",
-            "Android Async Programming and Services"
-        )
-
-        var secondCourseInfo = CourseInfo(
-            "android_async",
-            "Android Async Programming and Services"
-        )
-
-        var thirdCourseInfo = CourseInfo(
-            "java_core",
-            "Java Fundamentals: The Core Platform"
-        )
-
-        assertEquals(
-            firstCourseInfo,
-            secondCourseInfo
-        ) // pass because the equals() method returns true
-
-        assertNotEquals(
-            firstCourseInfo,
-            thirdCourseInfo
-        ) // pass because the equals() method returns false
-    }
-
-    /**
-     * checks if the object reference is null
-     */
-    @Test
-    fun assertNullTests() {
-        var firstCourseInfo = CourseInfo(
-            "android_async",
-            "Android Async Programming and Services"
-        )
-
-        var secondCourseInfo = null
-
-        assertNotNull(firstCourseInfo) // pass because object reference is not null
-        assertNull(secondCourseInfo) // pass because object reference null
-    }
-
     @Test
     fun addNote() {
-        //get the input to use in the addNote() method
+        //construct the input to use in the addNote() method
         val course = DataManager.courses.get("android_async")!!
         val noteTitle = "This is a test note"
         val noteText = "This is the body of my first test note"
 
-        //add note to notes ArrayList<NoteInfo> and store its position
+        //add note to the DataManager's notes ArrayList<NoteInfo> and store its position
         val indexOfNewlyAddedNote = DataManager.addNote(course, noteTitle, noteText)
 
-        //get the note you just added to notes ArrayList<NoteInfo> using the index obtained above
+        //get the note you just added to the DataManager's notes ArrayList<NoteInfo>, using the index obtained above
         val newlyAddedNote = DataManager.notes[indexOfNewlyAddedNote]
 
         // when used on objects, assertEquals(expected, actual) compares them
         // using the equals() method
         assertEquals(course, newlyAddedNote.course)
-        assertEquals(noteTitle, newlyAddedNote.title)
-        assertEquals(noteText, newlyAddedNote.text)
+        assertEquals(noteTitle, newlyAddedNote.title) // equality operator used here?
+        assertEquals(noteText, newlyAddedNote.text) // equality operator used here?
     }
 
+    /**
+     * Example 2 Unit Test
+     */
     @Test
     fun findSimilarNote() {
         //create the input to use in the findNote() method
@@ -141,4 +64,93 @@ class DataManagerTest {
         // as a parameter
         assertEquals(index2, foundIndex2)
     }
+
+    /**
+     * Example 3 Assuring test consistency by clearing the list and initializing it before each test.
+     */
+    @Before
+    @After
+    fun setUp() {
+        DataManager.notes.clear()
+        DataManager.initializeNotes()
+    }
+
+    /**
+     * Example 4 Checks for equality of references when used on objects
+     */
+    @Test
+    fun assertSameTests() {
+        val firstCourseInfo = CourseInfo(
+            "android_async",
+            "Android Async Programming and Services"
+        )
+
+        val secondCourseInfo = CourseInfo(
+            "android_async",
+            "Android Async Programming and Services"
+        )
+
+        val listOfCourses = ArrayList<CourseInfo>()
+
+        listOfCourses.add(firstCourseInfo)
+        listOfCourses.add(secondCourseInfo)
+
+        val item = listOfCourses[0]
+        val sameItem = listOfCourses[0]
+
+        assertSame(item, sameItem) // pass because object references are the same
+
+        assertNotSame(
+            firstCourseInfo,
+            secondCourseInfo
+        ) // pass because the object references are not same
+    }
+
+    /**
+     * Example 5 checks for equality of using the equals() method objects when used on objects
+     */
+    @Test
+    fun assertEqualsTests() {
+        var firstCourseInfo = CourseInfo(
+            "android_async",
+            "Android Async Programming and Services"
+        )
+
+        var secondCourseInfo = CourseInfo(
+            "android_async",
+            "Android Async Programming and Services"
+        )
+
+        var thirdCourseInfo = CourseInfo(
+            "java_core",
+            "Java Fundamentals: The Core Platform"
+        )
+
+        assertEquals(
+            firstCourseInfo,
+            secondCourseInfo
+        ) // pass because the equals() method returns true
+
+        assertNotEquals(
+            firstCourseInfo,
+            thirdCourseInfo
+        ) // pass because the equals() method returns false
+    }
+
+    /**
+     * Example 6 checks if the object reference is null
+     */
+    @Test
+    fun assertNullTests() {
+        var firstCourseInfo = CourseInfo(
+            "android_async",
+            "Android Async Programming and Services"
+        )
+
+        var secondCourseInfo = null
+
+        assertNotNull(firstCourseInfo) // pass because object reference is not null
+        assertNull(secondCourseInfo) // pass because object reference is null
+    }
+
 }

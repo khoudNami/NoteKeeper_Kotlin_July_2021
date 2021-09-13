@@ -10,6 +10,12 @@ object DataManager {
     }
 
     fun initializeNotes() {
+//        addNote( // can also use this addNote() method, which was later defined in the testing course
+//            CourseInfo("android_intents", "Android Programming with Intents"),
+//            "Note 0",
+//            "Text 0"
+//        )
+
         notes.add(
             NoteInfo(
                 CourseInfo("android_intents", "Android Programming with Intents"),
