@@ -19,11 +19,52 @@ import kotlinx.android.synthetic.main.app_bar_items.*
 import kotlinx.android.synthetic.main.content_note_list.*
 
 
-class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class ItemsActivity : AppCompatActivity(),
+    NavigationView.OnNavigationItemSelectedListener,
+    NoteRecyclerAdapter.OnNoteSelectedListener {
 
 
-    private val noteLayoutManager by lazy { LinearLayoutManager(this) }
-    private val noteRecyclerAdapter by lazy { NoteRecyclerAdapter(this, DataManager.notes) }
+    private val noteLayoutManager by lazy {
+        LinearLayoutManager(this)
+    }
+
+    private val noteRecyclerAdapter by lazy {
+        val adapter = NoteRecyclerAdapter(this, DataManager.notes)
+        adapter.setOnSelectedListener(this)
+        adapter
+    }
+
+    private val maxRecentlyVIewNotes = 5
+    private val recentlyViewNotes = ArrayList<NoteInfo>(maxRecentlyVIewNotes)
+
+    private val recentlyViewNoteRecyclerAdapter by lazy {
+        val adapter = NoteRecyclerAdapter(this, recentlyViewNotes)
+        adapter.setOnSelectedListener(this)
+        adapter
+    }
+
+    private fun displayRecentlyViewNotes() {
+        listItems.layoutManager = noteLayoutManager
+        listItems.adapter = recentlyViewNoteRecyclerAdapter
+        nav_view.menu.findItem(R.id.nav_recent_notes).isChecked = true
+    }
+
+    override fun onNoteSelected(note: NoteInfo) {
+        addToRecentlyViewNotes(note)
+    }
+
+    private fun addToRecentlyViewNotes(note: NoteInfo) {
+        val existingIndex = recentlyViewNotes.indexOf(note)
+        if (existingIndex == -1) {
+            recentlyViewNotes.add(0, note)
+            for (index in recentlyViewNotes.lastIndex downTo maxRecentlyVIewNotes)
+                recentlyViewNotes.removeAt(index)
+        } else {
+            for (index in (existingIndex - 1) downTo 0)
+                recentlyViewNotes[index + 1] = recentlyViewNotes[index]
+            recentlyViewNotes[0] = note
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +123,9 @@ class ItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             }
             R.id.nav_courses -> {
                 displayCourses()
+            }
+            R.id.nav_recent_notes -> {
+                displayRecentlyViewNotes()
             }
             R.id.nav_share -> {
                 handleSelection("Don't you think you've share enough")
