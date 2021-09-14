@@ -3,7 +3,7 @@ package za.co.khoudnami.notekeeper
 object DataManager {
     val courses = HashMap<String, CourseInfo>()
     val notes = ArrayList<NoteInfo>()
-    //val recentlyViewedNotesList = ArrayList<NoteInfo>()
+    val recentlyViewedNotesList = ArrayList<NoteInfo>()
 
     init {
         initializeCourses()
