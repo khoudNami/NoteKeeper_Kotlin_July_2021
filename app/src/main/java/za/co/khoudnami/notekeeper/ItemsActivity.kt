@@ -39,7 +39,7 @@ class ItemsActivity : AppCompatActivity(),
     private val recentlyViewNotes = ArrayList<NoteInfo>(maxRecentlyVIewNotes)
 
     private val recentlyViewNoteRecyclerAdapter by lazy {
-        val adapter = NoteRecyclerAdapter(this, recentlyViewNotes)
+        val adapter = NoteRecyclerAdapter(this, DataManager.recentlyViewedNotesList)
         adapter.setOnSelectedListener(this) //Tell it to listen because recentlyViewedNotes list wont update if I dont tell recentlyViewedNotesAdapter to listen
         adapter
     }
@@ -55,20 +55,19 @@ class ItemsActivity : AppCompatActivity(),
     }
 
     private fun addToRecentlyViewNotes(note: NoteInfo) {
-        val existingIndex = recentlyViewNotes.indexOf(note)
+        val existingIndex = DataManager.recentlyViewedNotesList.indexOf(note)
         if (existingIndex == -1) {
-            recentlyViewNotes.add(0, note)
-            for (index in recentlyViewNotes.lastIndex downTo maxRecentlyVIewNotes)
-                recentlyViewNotes.removeAt(index)
+            DataManager.recentlyViewedNotesList.add(0, note)
+            for (index in DataManager.recentlyViewedNotesList.lastIndex downTo maxRecentlyVIewNotes)
+                DataManager.recentlyViewedNotesList.removeAt(index)
         } else {
             for (index in (existingIndex - 1) downTo 0)
-                recentlyViewNotes[index + 1] = recentlyViewNotes[index]
-            recentlyViewNotes[0] = note
+                DataManager.recentlyViewedNotesList[index + 1] = DataManager.recentlyViewedNotesList[index]
+            DataManager.recentlyViewedNotesList[0] = note
         }
     }
 
-    private val viewModel =
-        ViewModelProvider(this).get(ItemsActivityViewModel::class.java)
+    private val viewModel by lazy { ViewModelProvider(this).get(ItemsActivityViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,7 +93,7 @@ class ItemsActivity : AppCompatActivity(),
         nav_view.setNavigationItemSelectedListener(this)
 
         val vm = viewModel
-        displayNotes()
+        handleDisplaySelection(viewModel.navDrawerDisplaySelection)
 
 
     }
@@ -125,14 +124,11 @@ class ItemsActivity : AppCompatActivity(),
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_notes -> {
-                displayNotes()
-            }
-            R.id.nav_courses -> {
-                displayCourses()
-            }
+            R.id.nav_notes,
+            R.id.nav_courses,
             R.id.nav_recent_notes -> {
-                displayRecentlyViewNotes()
+                handleDisplaySelection(item.itemId)
+                viewModel.navDrawerDisplaySelection = item.itemId
             }
             R.id.nav_share -> {
                 handleSelection("Don't you think you've share enough")
@@ -149,7 +145,6 @@ class ItemsActivity : AppCompatActivity(),
     private fun displayNotes() {
         listItems.layoutManager = noteLayoutManager
         listItems.adapter = noteRecyclerAdapter
-
         nav_view.menu.findItem(R.id.nav_notes).isChecked = true
     }
 
@@ -161,6 +156,21 @@ class ItemsActivity : AppCompatActivity(),
 
     private fun handleSelection(message: String) {
         Snackbar.make(listItems, message, Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun handleDisplaySelection(itemId: Int) {
+        when (itemId) {
+            R.id.nav_notes -> {
+                displayNotes()
+            }
+            R.id.nav_courses -> {
+                displayCourses()
+            }
+            R.id.nav_recent_notes -> {
+                displayRecentlyViewNotes()
+            }
+
+        }
     }
 
 }
