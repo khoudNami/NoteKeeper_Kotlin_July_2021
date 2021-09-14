@@ -39,7 +39,7 @@ class ItemsActivity : AppCompatActivity(),
 
     private val recentlyViewNoteRecyclerAdapter by lazy {
         val adapter = NoteRecyclerAdapter(this, recentlyViewNotes)
-        adapter.setOnSelectedListener(this)
+        adapter.setOnSelectedListener(this) //Tell it to listen because recentlyViewedNotes list wont update if I dont tell recentlyViewedNotesAdapter to listen
         adapter
     }
 
