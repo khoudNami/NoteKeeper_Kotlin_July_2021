@@ -115,4 +115,13 @@ dependencies {
      */
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
     //implementation 'androidx.test.espresso:espresso-contrib:3.4.0'
+
+    /**
+     * ViewModel related dependencies
+     */
+   // implementation "android.arch.lifecycle:extensions:1.1.1"
+
+    implementation "androidx.lifecycle:lifecycle-extensions"
+
+   // implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
 }
