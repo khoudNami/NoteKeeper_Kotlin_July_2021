@@ -12,6 +12,7 @@ import com.google.android.material.navigation.NavigationView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_items.*
@@ -66,6 +67,9 @@ class ItemsActivity : AppCompatActivity(),
         }
     }
 
+    private val viewModel =
+        ViewModelProvider(this).get(ItemsActivityViewModel::class.java)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -87,9 +91,12 @@ class ItemsActivity : AppCompatActivity(),
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
+        nav_view.setNavigationItemSelectedListener(this)
+
+        val vm = viewModel
         displayNotes()
 
-        nav_view.setNavigationItemSelectedListener(this)
+
     }
 
     override fun onResume() {
