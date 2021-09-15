@@ -2,6 +2,7 @@ package za.co.khoudnami.notekeeper
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.Menu
@@ -44,7 +45,6 @@ class ItemsActivity : AppCompatActivity(),
         adapter.setOnSelectedListener(this) //Tell it to listen because recentlyViewedNotes list wont update if I dont tell recentlyViewedNotesAdapter to listen
         adapter
     }
-
 
     /** AppCompatActivity method overrides */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +102,26 @@ class ItemsActivity : AppCompatActivity(),
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy()")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d(TAG, "onRestart()")
+    }
+
+    override fun isFinishing(): Boolean {
+        return super.isFinishing()
+        Log.d(TAG, "isFinishing()")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        Log.d(TAG, "onSaveInstanceState()")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Log.d(TAG, "onRestoreInstanceState()")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
