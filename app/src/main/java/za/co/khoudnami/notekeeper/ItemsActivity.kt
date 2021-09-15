@@ -2,6 +2,7 @@ package za.co.khoudnami.notekeeper
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.Menu
@@ -30,6 +31,7 @@ class ItemsActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     NoteRecyclerAdapter.OnNoteSelectedListener {
 
+    private val TAG = this::class.simpleName
 
     private val noteLayoutManager by lazy {
         LinearLayoutManager(this)
@@ -101,15 +103,57 @@ class ItemsActivity : AppCompatActivity(),
 
         handleDisplaySelection(viewModel.navDrawerDisplaySelection)
 
-        Log.d("ItemsActivity", "ItemsActivity onCreate()")
+        Log.d(TAG, "onCreate()")
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart()")
     }
 
     override fun onResume() {
         super.onResume()
         listItems.adapter?.notifyDataSetChanged()
         // It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort.
+        Log.d(TAG, "onResume()")
     }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop()")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy()")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d(TAG, "onRestart()")
+    }
+
+    override fun isFinishing(): Boolean {
+        return super.isFinishing()
+        Log.d(TAG, "isFinishing()")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        Log.d(TAG, "onSaveInstanceState()")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        Log.d(TAG, "onRestoreInstanceState()")
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -180,8 +224,4 @@ class ItemsActivity : AppCompatActivity(),
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("ItemsActivity", "ItemsActivity onDestroy()")
-    }
 }
