@@ -19,6 +19,11 @@ import kotlinx.android.synthetic.main.activity_items.*
 import kotlinx.android.synthetic.main.app_bar_items.*
 import kotlinx.android.synthetic.main.content_note_list.*
 
+/**
+ * This version 2 is based on the realization that the state of recentlyViewedNotesList can be
+ * preserved by just storing this list in the DataManager instead of the ViewModel. It will be
+ * interesting to see how this alternative holds out in future modules.
+ */
 
 class ItemsActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
@@ -36,7 +41,7 @@ class ItemsActivity : AppCompatActivity(),
     }
 
     private val maxRecentlyVIewNotes = 5
-    private val recentlyViewNotes = ArrayList<NoteInfo>(maxRecentlyVIewNotes)
+    //private val recentlyViewNotes = ArrayList<NoteInfo>(maxRecentlyVIewNotes) moved this to DataManager
 
     private val recentlyViewNoteRecyclerAdapter by lazy {
         val adapter = NoteRecyclerAdapter(this, DataManager.recentlyViewedNotesList)
