@@ -58,6 +58,11 @@ class ItemsActivity : AppCompatActivity(),
             startActivity(Intent(this, NoteActivity::class.java))
         }
 
+        if (savedInstanceState != null) {
+            viewModel.navDrawerDisplaySelection =
+                savedInstanceState.getInt(viewModel.navDrawerDisplaySelectionName)
+        }
+
         val toggle = ActionBarDrawerToggle(
             this,
             drawer_layout,
@@ -70,7 +75,6 @@ class ItemsActivity : AppCompatActivity(),
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        val vm = viewModel
         handleDisplaySelection(viewModel.navDrawerDisplaySelection)
 
         Log.d(TAG, "onCreate()")
@@ -116,6 +120,10 @@ class ItemsActivity : AppCompatActivity(),
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putInt(
+            viewModel.navDrawerDisplaySelectionName,
+            viewModel.navDrawerDisplaySelection
+        )
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
