@@ -3,6 +3,7 @@ package za.co.khoudnami.notekeeper
 import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -67,7 +68,8 @@ class ItemsActivity : AppCompatActivity(),
                 DataManager.recentlyViewedNotesList.removeAt(index)
         } else {
             for (index in (existingIndex - 1) downTo 0)
-                DataManager.recentlyViewedNotesList[index + 1] = DataManager.recentlyViewedNotesList[index]
+                DataManager.recentlyViewedNotesList[index + 1] =
+                    DataManager.recentlyViewedNotesList[index]
             DataManager.recentlyViewedNotesList[0] = note
         }
     }
@@ -97,9 +99,9 @@ class ItemsActivity : AppCompatActivity(),
 
         nav_view.setNavigationItemSelectedListener(this)
 
-        val vm = viewModel
         handleDisplaySelection(viewModel.navDrawerDisplaySelection)
 
+        Log.d("ItemsActivity", "ItemsActivity onCreate()")
 
     }
 
@@ -178,4 +180,8 @@ class ItemsActivity : AppCompatActivity(),
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("ItemsActivity", "ItemsActivity onDestroy()")
+    }
 }
