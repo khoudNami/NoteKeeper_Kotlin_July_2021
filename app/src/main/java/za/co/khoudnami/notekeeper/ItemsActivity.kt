@@ -110,13 +110,12 @@ class ItemsActivity : AppCompatActivity(),
     }
 
     override fun isFinishing(): Boolean {
-        return super.isFinishing()
         Log.d(TAG, "isFinishing()")
+        return super.isFinishing()
     }
 
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
-        Log.d(TAG, "onSaveInstanceState()")
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
