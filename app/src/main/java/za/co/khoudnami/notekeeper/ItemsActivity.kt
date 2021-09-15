@@ -3,6 +3,7 @@ package za.co.khoudnami.notekeeper
 import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -24,6 +25,9 @@ class ItemsActivity : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     NoteRecyclerAdapter.OnNoteSelectedListener {
 
+    private val TAG = ItemsActivity::class.simpleName
+
+    private val viewModel by lazy { ViewModelProvider(this).get(ItemsActivityViewModel::class.java) }
 
     private val noteLayoutManager by lazy {
         LinearLayoutManager(this)
@@ -35,28 +39,14 @@ class ItemsActivity : AppCompatActivity(),
         adapter
     }
 
-
-
     private val recentlyViewNoteRecyclerAdapter by lazy {
         val adapter = NoteRecyclerAdapter(this, viewModel.recentlyViewNotes)
         adapter.setOnSelectedListener(this) //Tell it to listen because recentlyViewedNotes list wont update if I dont tell recentlyViewedNotesAdapter to listen
         adapter
     }
 
-    private fun displayRecentlyViewNotes() {
-        listItems.layoutManager = noteLayoutManager
-        listItems.adapter = recentlyViewNoteRecyclerAdapter
-        nav_view.menu.findItem(R.id.nav_recent_notes).isChecked = true
-    }
 
-    override fun onNoteSelected(note: NoteInfo) {
-        viewModel.addToRecentlyViewNotes(note)
-    }
-
-
-
-    private val viewModel by lazy { ViewModelProvider(this).get(ItemsActivityViewModel::class.java) }
-
+    /** AppCompatActivity method overrides */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -83,13 +73,35 @@ class ItemsActivity : AppCompatActivity(),
         val vm = viewModel
         handleDisplaySelection(viewModel.navDrawerDisplaySelection)
 
+        Log.d(TAG, "onCreate()")
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart()")
     }
 
     override fun onResume() {
         super.onResume()
         listItems.adapter?.notifyDataSetChanged()
         // It will always be more efficient to use more specific change events if you can. Rely on notifyDataSetChanged as a last resort.
+        Log.d(TAG, "onResume()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop()")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy()")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -110,6 +122,7 @@ class ItemsActivity : AppCompatActivity(),
         }
     }
 
+    /** NavigationView.OnNavigationItemSelectedListener override */
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_notes,
@@ -130,6 +143,12 @@ class ItemsActivity : AppCompatActivity(),
         return true
     }
 
+    /** NoteRecyclerAdapter.OnNoteSelectedListener override */
+    override fun onNoteSelected(note: NoteInfo) {
+        viewModel.addToRecentlyViewNotes(note)
+    }
+
+    /** Custom methods */
     private fun displayNotes() {
         listItems.layoutManager = noteLayoutManager
         listItems.adapter = noteRecyclerAdapter
@@ -159,6 +178,12 @@ class ItemsActivity : AppCompatActivity(),
             }
 
         }
+    }
+
+    private fun displayRecentlyViewNotes() {
+        listItems.layoutManager = noteLayoutManager
+        listItems.adapter = recentlyViewNoteRecyclerAdapter
+        nav_view.menu.findItem(R.id.nav_recent_notes).isChecked = true
     }
 
 }
