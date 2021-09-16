@@ -59,8 +59,7 @@ class ItemsActivity : AppCompatActivity(),
         }
 
         if (savedInstanceState != null) {
-            viewModel.navDrawerDisplaySelection =
-                savedInstanceState.getInt(viewModel.navDrawerDisplaySelectionName)
+            viewModel.restoreState(savedInstanceState)
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -120,10 +119,7 @@ class ItemsActivity : AppCompatActivity(),
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(
-            viewModel.navDrawerDisplaySelectionName,
-            viewModel.navDrawerDisplaySelection
-        )
+        viewModel.saveState(outState)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
