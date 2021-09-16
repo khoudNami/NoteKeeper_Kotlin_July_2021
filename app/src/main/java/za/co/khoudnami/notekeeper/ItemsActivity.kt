@@ -2,8 +2,6 @@ package za.co.khoudnami.notekeeper
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.provider.ContactsContract
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -11,7 +9,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -41,7 +38,7 @@ class ItemsActivity : AppCompatActivity(),
     }
 
     private val recentlyViewNoteRecyclerAdapter by lazy {
-        val adapter = NoteRecyclerAdapter(this, viewModel.recentlyViewNotes)
+        val adapter = NoteRecyclerAdapter(this, viewModel.recentlyViewedNotes)
         adapter.setOnSelectedListener(this) //Tell it to listen because recentlyViewedNotes list wont update if I dont tell recentlyViewedNotesAdapter to listen
         adapter
     }
