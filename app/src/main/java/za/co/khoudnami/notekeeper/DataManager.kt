@@ -3,7 +3,7 @@ package za.co.khoudnami.notekeeper
 object DataManager {
     val courses = HashMap<String, CourseInfo>()
     val notes = ArrayList<NoteInfo>()
-   // val recentlyViewedNotesList = ArrayList<NoteInfo>()
+    // val recentlyViewedNotesList = ArrayList<NoteInfo>()
 
     init {
         initializeCourses()
@@ -112,6 +112,42 @@ object DataManager {
         courses.set(course.courseId, course)
     }
 
+    fun addNote(note: NoteInfo): Int {
+        notes.add(note)
+        return notes.lastIndex
+    }
+
+    fun idOfNote(note: NoteInfo) = notes.indexOf(note)
+
+    fun isLastNoteId(noteId: Int) = noteId == notes.lastIndex
+
+    fun loadNote(noteId: Int) = notes[noteId]
+
+    fun loadNotes(vararg noteIds: Int): List<NoteInfo> {
+        simulateLoadDelay()
+        val noteList: List<NoteInfo>
+
+        if (noteIds.isEmpty())
+            noteList = notes
+        else {
+            noteList = ArrayList<NoteInfo>(noteIds.size)
+            for (noteId in noteIds)
+                noteList.add(notes[noteId])
+        }
+        return noteList
+    }
+
+    fun noteIdsAsIntArray(notes: List<NoteInfo>): IntArray {
+        val noteIds = IntArray(notes.size)
+        for (index in 0..notes.lastIndex)
+            noteIds[index] = DataManager.idOfNote(notes[index])
+        return noteIds
+    }
+
+    private fun simulateLoadDelay() {
+        Thread.sleep(1000)
+    }
+
     /**
      * addNote() and findNote() were used in the Testing course
      * Adds a note to notes ArrayList<NoteInfo>
@@ -130,4 +166,5 @@ object DataManager {
         }
         return null
     }
+
 }
