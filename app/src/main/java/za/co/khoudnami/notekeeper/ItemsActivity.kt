@@ -55,7 +55,7 @@ class ItemsActivity : AppCompatActivity(),
             startActivity(Intent(this, NoteActivity::class.java))
         }
 
-        if (savedInstanceState != null) {
+        if (viewModel.isNewlyCreated && savedInstanceState != null) {
             viewModel.restoreState(savedInstanceState)
         }
 

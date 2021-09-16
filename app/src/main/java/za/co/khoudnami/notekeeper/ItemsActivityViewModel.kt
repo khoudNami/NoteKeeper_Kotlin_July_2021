@@ -10,6 +10,8 @@ class ItemsActivityViewModel : ViewModel() {
     val recentlyViewedNoteIdsName =
         "za.co.khoudnami.notekeeper.recentlyViewedNoteIds"
 
+    var isNewlyCreated = true
+
     //default selection when activity is first created is nav_notes
     var navDrawerDisplaySelection = R.id.nav_notes
 
