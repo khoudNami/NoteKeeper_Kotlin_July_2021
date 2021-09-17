@@ -41,7 +41,7 @@ class ItemsActivityViewModel : ViewModel() {
         navDrawerDisplaySelection =
             savedInstanceState.getInt(navDrawerDisplaySelectionName)
         val noteIds = savedInstanceState.getIntArray(recentlyViewedNoteIdsName)
-        val noteList = DataManager.loadNotes(*noteIds!!)
+        val noteList = DataManager.loadNotes(*noteIds)
         recentlyViewedNotes.addAll(noteList)
 
     }
