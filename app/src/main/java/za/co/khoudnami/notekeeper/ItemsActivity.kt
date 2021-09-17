@@ -58,6 +58,7 @@ class ItemsActivity : AppCompatActivity(),
         if (viewModel.isNewlyCreated && savedInstanceState != null) {
             viewModel.restoreState(savedInstanceState)
         }
+        viewModel.isNewlyCreated = false
 
         val toggle = ActionBarDrawerToggle(
             this,

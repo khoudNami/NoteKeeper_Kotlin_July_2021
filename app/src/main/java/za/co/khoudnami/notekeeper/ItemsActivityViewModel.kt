@@ -35,14 +35,18 @@ class ItemsActivityViewModel : ViewModel() {
         outState.putInt(navDrawerDisplaySelectionName, navDrawerDisplaySelection)
         val noteIds = DataManager.noteIdsAsIntArray(recentlyViewedNotes)
         outState.putIntArray(recentlyViewedNoteIdsName, noteIds)
+        var x: IntArray
     }
 
     fun restoreState(savedInstanceState: Bundle) {
         navDrawerDisplaySelection =
             savedInstanceState.getInt(navDrawerDisplaySelectionName)
         val noteIds = savedInstanceState.getIntArray(recentlyViewedNoteIdsName)
-        val noteList = DataManager.loadNotes(*noteIds)
-        recentlyViewedNotes.addAll(noteList)
+        if (noteIds != null) {
+            val noteList = DataManager.loadNotes(*noteIds)
+            recentlyViewedNotes.addAll(noteList)
+        }
+
 
     }
 }
