@@ -112,10 +112,17 @@ class NoteActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> true
+
             R.id.action_next -> {
                 moveNext()
                 true
             }
+
+            R.id.action_get_together -> {
+                noteGetTogetherHelper.sendMessage(DataManager.loadNote(notePosition))
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
