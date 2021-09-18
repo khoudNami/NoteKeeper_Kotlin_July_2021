@@ -16,6 +16,8 @@ class NoteActivity : AppCompatActivity() {
     private val tag = this::class.simpleName
     private var notePosition = POSITION_NOT_SET
 
+    val noteGetTogetherHelper = NoteGetTogetherHelper(this, lifecycle)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -43,6 +45,16 @@ class NoteActivity : AppCompatActivity() {
 
         Log.d(tag, "onCreate")
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(tag, "onStart()")
+    }
+
+    override fun onStop() {
+        Log.d(tag, "onStop()")
+        super.onStop()
     }
 
     private fun displayNote() {
