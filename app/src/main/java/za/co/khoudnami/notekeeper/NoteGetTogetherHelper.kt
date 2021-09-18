@@ -22,13 +22,23 @@ class NoteGetTogetherHelper(val context: Context, val lifecycle: Lifecycle) : Li
         Log.d(tag, "Location Callback Lat: $currentLat Lon: $currentLon")
     }
 
+    val msgManager = PseudoMessagingManager(context)
+    val msgConnection: PseudoMessagingConnection? = null
+
+    fun sendMessage(note: NoteInfo) {
+        val getTogetherMessage = "$currentLat | $currentLon | ${note.title} | ${note.course?.title}"
+        msgConnection?.send(getTogetherMessage)
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun startHandler() {
+        Log.d(tag, "startHandler")
         locManager.start()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun stopHandler() {
+        Log.d(tag, "stopHandler")
         locManager.stop()
     }
 
